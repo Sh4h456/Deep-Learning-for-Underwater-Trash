@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaVision - Underwater Object Detection</title>
+    <!-- Link to your CSS file in the css subfolder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- The loader element for processing feedback -->
+    <div class="loader-wrapper" id="loader">
+        <div class="bubble-loader">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+        <p>Analyzing the depths...</p>
+    </div>
+
+    <header class="main-header">
+        <h1>AquaVision</h1>
+        <p>Advanced Underwater Object Detection</p>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Left Column: Controls and Chat -->
+        <div class="left-column">
+            <div class="card">
+                <h2>Controls</h2>
+                <form method="post" enctype="multipart/form-data" id="detection-form">
+                    <div class="form-group">
+                        <label for="file">1. Upload Image File</label>
+                        <input type="file" name="file" id="file" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confidence">2. Set Confidence Threshold: <span id="confidence-value">{{ confidence }}</span></label>
+                        <input type="range" name="confidence" id="confidence" min="0.0" max="1.0" value="{{ confidence }}" step="0.05" oninput="document.getElementById('confidence-value').textContent = this.value">
+                    </div>
+
+                    <input type="submit" value="Detect Trash">
+                </form>
+            </div>
+
+            <div class="card chatbot-container">
+                <h2>Ask AquaBot</h2>
+                <div class="chat-window" id="chat-window">
+                    <div class="chat-message bot-message">
+                        Hello! I'm AquaBot. Ask me anything about marine life, ocean conservation, or pollution.
+                    </div>
+                </div>
+                <form id="chat-form" class="chat-input-form">
+                    <input type="text" id="chat-input" placeholder="Type your question here..." autocomplete="off">
+                    <button type="submit" id="chat-submit" aria-label="Send chat message">Send</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Column: Results -->
+        <div class="right-column">
+            {% if result_image %}
+            <div class="card">
+                <h2>Detection Results</h2>
+                <div class="results-grid">
+                    <div class="image-box">
+                        <h3>Original Image</h3>
+                        <img src="{{ url_for('static', filename='uploads/' + original_image) }}" alt="Original Image">
+                    </div>
+                    <div class="image-box">
+                        <h3>Detection Result</h3>
+                        <img src="{{ url_for('static', filename='uploads/' + result_image) }}" alt="Detection Result">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card summary-box">
+                <h3>Detection Summary</h3>
+                {% if summary and summary|length > 0 %}
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Class Detected</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item, count in summary.items() %}
+                            <tr>
+                                <td>{{ item }}</td>
+                                <td>{{ count }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No objects were detected with the selected confidence threshold of {{ confidence }}.</p>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="card placeholder-card">
+                <h2>Results Panel</h2>
+                <p>Upload an image and click "Detect Trash" to see the results here.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- Link to your JS file in the js subfolder -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
