@@ -3,131 +3,156 @@
 <img width="1912" height="882" alt="image" src="https://github.com/user-attachments/assets/14d6b4af-1f3f-4c01-97ff-f9dab6a906cf" />
 
 
-AquaVision is a full-stack web application designed for the detection of marine debris in underwater imagery. It leverages a custom-trained YOLOv8 model, served by a Python Flask API, and is presented through a dynamic and interactive React frontend. This project was developed as part of a Master's Final Year Project.
 
-## Features
+# AquaVision 
 
--   **AI-Powered Detection:** Utilizes a state-of-the-art YOLOv8 object detection model to identify debris.
--   **Interactive Frontend:** A modern application built with React for a seamless user experience.
--   **Immersive Landing Page:** A dynamic entry point with a video background to welcome users.
--   **Model Performance Dashboard:** Dedicated pages to visualize and analyze model training metrics (mAP and Training Loss).
--   **Model Comparison:** A side-by-side visual and quantitative comparison between YOLOv7 and YOLOv8 models.
--   **AI Chatbot:** An integrated "AquaBot" powered by Google Gemini to answer questions about marine life and pollution.
+**AquaVision** is a full-stack web application designed for the detection of marine debris in underwater imagery. It leverages a **custom-trained YOLOv8 model**, served via a **Flask API**, and delivered through an interactive **React frontend**. This project was developed as part of a **Master's Final Year Project** in Data Science.
 
-## Tech Stack
+---
 
-**Backend:**
--   **Framework:** Flask
--   **AI Model:** YOLOv8 (Ultralytics)
--   **API:** RESTful API for predictions and chat
--   **LLM:** Google Gemini API
+##  Features
 
-**Frontend:**
--   **Framework:** React.js
--   **Styling:** Tailwind CSS
--   **Routing:** React Router
--   **Charts:** Recharts
--   **Icons:** Lucide React
+- **AI-Powered Detection:** Uses a YOLOv8-based object detection model enhanced with CBAM and Swin Transformer.
+- **Interactive Frontend:** A modern React-based UI for seamless interaction.
+- **Immersive Landing Page:** A visually engaging entry point with a video background.
+- **Model Performance Dashboard:** Visualizes training metrics such as mAP and loss curves.
+- **Model Comparison:** Side-by-side visual and metric-based comparison of YOLOv7 and YOLOv8 models.
+- **AI Chatbot (AquaBot):** An integrated chatbot powered by Google Gemini for marine life and pollution queries.
 
-## Setup and Installation
+---
 
-Follow these instructions to get a local copy up and running.
+##  Tech Stack
 
-### Prerequisites
+### Backend:
+- **Framework:** Flask
+- **Model:** YOLOv8 (Ultralytics) with CBAM + Swin Transformer
+- **API:** RESTful API for predictions and chat
+- **LLM:** Google Gemini API (via environment variable)
 
--   Python 3.8+
--   Node.js and npm
--   A Google Gemini API Key
+### Frontend:
+- **Framework:** React.js
+- **Styling:** Tailwind CSS
+- **Routing:** React Router
+- **Charts:** Recharts
+- **Icons:** Lucide React
 
-### Installation
+---
 
-1.  **Clone the repository:**
-    
-    git clone 
-    cd YOUR_REPO_NAME
-    
+## ⚙️ Setup and Installation
 
-2.  **Setup the Backend (Flask-App):**
-    
-    cd Flask-App (you can rename it to backend as well)
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    pip install -r requirements.txt
-    
+### 🔐 Prerequisites
+- Python 3.8+
+- Node.js and npm
+- Google Gemini API Key
 
-3.  **Setup Environment Variables:**
-    -   Create a file named `.env` inside the `Flask-App` folder.
-    -   Add your Google Gemini API key to it:
-        ```
-        GOOGLE_API_KEY="YOUR_API_KEY_HERE"
-        ```
+### 🧩 Installation Steps
 
-4.  **Download the Model File:**
-    -   The trained model weights (`best.pt`) are included in the repository
-    -   Place the `best.pt` file inside the `Flask-App` directory.
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/AquaVision.git
+   cd AquaVision
+   ```
 
-5.  **Setup the Frontend (react-app):**
-    ```bash
-    cd ../react-app
-    npm install
-    ```
+2. **Backend Setup (Flask App)**
+   ```bash
+   cd Flask-App
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-### Running the Application
+3. **Configure Environment Variables**
+   - Create a `.env` file inside `Flask-App/` and add:
+     ```
+     GOOGLE_API_KEY="YOUR_API_KEY_HERE"
+     ```
 
-You need to run two servers concurrently in two separate terminals.
+4. **Download and Place the YOLO Model**
+   - Copy your trained `best.pt` model weights into the `Flask-App/` directory.
 
-1.  **Start the Backend Server:**
-    -   From the `Flask-App` directory (with venv activated):
-    ```bash
-    python app.py
-    ```
-    The API will be running on `http://127.0.0.1:5001`.
+5. **Frontend Setup (React App)**
+   ```bash
+   cd ../react-app
+   npm install
+   ```
 
-2.  **Start the Frontend Server:**
-    -   From the `react-app` directory:
-    ```bash
-    npm start
-    ```
-    The application will open automatically in your browser at `http://localhost:3000`.
+---
 
-## Project Structure
+## 🖥️ Running the Application
+
+> Run backend and frontend in separate terminals.
+
+1. **Start Flask Backend**
+   ```bash
+   cd Flask-App
+   source venv/bin/activate
+   python app.py
+   ```
+   > Runs at: `http://127.0.0.1:5001`
+
+2. **Start React Frontend**
+   ```bash
+   cd react-app
+   npm start
+   ```
+   > Opens at: `http://localhost:3000`
+
+---
+
+##  Project Structure
+
+```
 /
-├── Flask-App/ # Flask API, AI model, and server logic
-│ ├── static/
-│ ├── venv/
-│ ├── app.py
-│ ├── best.pt
-│ └── requirements.txt
-└── react-app/ # React frontend application
-├── public/
-├── src/
-├── package.json
-└── tailwind.config.js
+├── Flask-App/         # Flask API, YOLO model, server logic
+│   ├── app.py
+│   ├── best.pt
+│   ├── static/
+│   ├── requirements.txt
+│   └── .env
+├── react-app/         # React frontend application
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── tailwind.config.js
+└── README.md
+```
 
-## Model Training
-1.  **DataPreprocesing&ExploratoryDataAnalysis:**
-Performs exploratory data analysis and formatting of the dataset in YOLOv8-compatible COCO format.
+---
 
-Includes:
-Directory structure checks
-Label integrity verification
-Dataset statistics (image size, class distribution)
-Bounding box visualization
+##  Model Training Pipeline
 
-2.  **Color Correction:**
-Enhances underwater image clarity using deep learning-based image enhancement models (e.g., FUnIE-GAN or Water-Net).
+### 1️⃣ Data Preprocessing & EDA
+- Formats dataset in YOLOv8-compatible COCO format.
+- Includes:
+  - Directory structure validation
+  - Label integrity checks
+  - Class distribution visualization
+  - Bounding box inspection
 
-Applies:
-Pretrained color correction models
-Batch enhancement on training/validation images
+### 2️⃣ Underwater Image Enhancement
+- Enhances images using models like **FUnIE-GAN** or **Water-Net**.
+- Applies:
+  - Pretrained color correction models
+  - Batch processing on training/validation sets
 
-4.  **Model Training:**
-   
-Trains a custom YOLOv8 model integrated with:
-CBAM for spatial and channel attention
-Swin Transformer blocks for better context modeling
+### 3️⃣ YOLOv8 Model Training
+- Trains a **custom YOLOv8** model with:
+  - **CBAM** for channel and spatial attention
+  - **Swin Transformer** for local/global context
+- Includes:
+  - Custom `custom_modules.py` and YAML model configuration
+  - Training with evaluation metrics (mAP50, mAP50-95)
 
-Includes:
-Model customization via custom_modules.py
-Custom YAML configuration for new backbone layers
-Training with evaluation metrics like mAP50 and mAP50-95
+---
+
+##  Contact
+
+For questions, reach out at: **khanshahswar45@gmail.com**
+
+---
+
+## 🧠 Acknowledgments
+- Ultralytics YOLOv8
+- FUnIE-GAN / Water-Net
+- OpenAI, Google Gemini API
+
