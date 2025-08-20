@@ -1,0 +1,38 @@
+# --- General ---
+.DS_Store
+*.pyc
+*.swp
+
+# --- Python / Backend (Flask-App) ---
+# Ignore the entire virtual environment folder
+/Flask-App/venv/
+
+# Ignore Python cache files
+/Flask-App/__pycache__/
+
+# Ignore environment variable files (CRITICAL FOR SECURITY)
+/Flask-App/*.env
+/Flask-App/.env
+
+
+
+
+
+# --- Node / Frontend (react-app) ---
+# Ignore the massive node_modules folder
+/react-app/node_modules/
+
+# Ignore the production build folder (it's generated during deployment)
+/react-app/build/
+
+# Ignore other Node/React temporary and environment files
+/react-app/.pnp
+/react-app/.pnp.js
+/react-app/coverage/
+/react-app/.env.local
+/react-app/.env.development.local
+/react-app/.env.test.local
+/react-app/.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
