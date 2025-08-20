@@ -7,21 +7,17 @@ pip install -r requirements.txt
 
 # --- Applying Custom Ultralytics Patch ---
 # 1. Find the installed library path
-ULTRALYTICS_PATH=$(python -c "import os, ultralytics; print(os.path.dirname(ultralytics.__file__))")
+# --- THIS IS THE FIX ---
+# We pipe the output to `tail -n 1` to grab only the last line (the actual path)
+ULTRALYTICS_PATH=$(python -c "import os, ultralytics; print(os.path.dirname(ultralytics.__file__))" | tail -n 1)
 echo "Ultralytics installed at: $ULTRALYTICS_PATH"
 
-# 2. Copy your custom module file(s)
-#    !!!! IMPORTANT: Remember to edit this line with your actual module filenames !!!!
-echo "Copying custom modules..."
+# 2. Copy your custom file(s) to the correct location
+#    !!!! IMPORTANT: EDIT THIS LINE with your actual filenames !!!!
+echo "Applying custom patch..."
 cp custom_ultralytics_files/custom_modules.py "$ULTRALYTICS_PATH/nn/custom_modules.py"
-echo "Custom modules copied."
-
-# --- THIS IS THE NEW LINE YOU ASKED FOR ---
-# 3. Copy your custom tasks.py file, overwriting the original
-echo "Copying custom tasks.py..."
 cp custom_ultralytics_files/tasks.py "$ULTRALYTICS_PATH/nn/tasks.py"
-echo "tasks.py copied successfully."
-# --- END OF NEW PART ---
+echo "Patch applied."
 
 # --- Building React Frontend ---
 echo "Navigating to frontend directory..."
