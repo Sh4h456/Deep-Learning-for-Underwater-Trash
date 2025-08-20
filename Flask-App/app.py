@@ -1,5 +1,5 @@
 import os
-import json # <--- NEW: Import the json library
+import json 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from ultralytics import YOLO
@@ -24,7 +24,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 # --- Google Gemini API Key Configuration ---
-# ... (this section is unchanged)
+
 try:
     genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
     print("Google Gemini API key configured successfully.")
@@ -32,7 +32,7 @@ except KeyError:
     print("CRITICAL ERROR: The GOOGLE_API_KEY environment variable is not set.")
 
 # --- Model Loading ---
-# ... (this section is unchanged)
+
 try:
     print("Loading YOLOv8 model...")
     model = YOLO('best.pt')
@@ -179,7 +179,7 @@ def predict():
 
             for annotation in gt_info:
                 label = annotation["label"]
-                bbox = annotation["bbox"] # Assuming [xmin, ymin, xmax, ymax]
+                bbox = annotation["bbox"]
                 
                 # Draw the rectangle (using green color for GT)
                 cv2.rectangle(image_to_draw_on, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 255, 0), 2)
@@ -193,7 +193,7 @@ def predict():
             gt_filepath = os.path.join(app.config['UPLOAD_FOLDER'], gt_filename)
             cv2.imwrite(gt_filepath, image_to_draw_on)
 
-        # 3. CONSTRUCT FINAL JSON RESPONSE (UPDATED)
+        # 3. CONSTRUCT FINAL JSON RESPONSE
         response_data = {
             "original_image_url": f"/uploads/{original_filename}",
             "predicted_image_url": f"/uploads/{result_filename}",
