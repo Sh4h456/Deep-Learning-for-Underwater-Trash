@@ -16,9 +16,7 @@ load_dotenv()
 # --- Initialization and Configuration ---
 FRONTEND_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'react-app', 'build'))
 
-# --- CRITICAL CHANGE ---
-# When using WhiteNoise, we initialize Flask WITHOUT the static_folder argument
-# WhiteNoise will handle serving the static files itself.
+
 app = Flask(__name__)
 CORS(app) 
 
@@ -42,6 +40,7 @@ except KeyError:
     print("CRITICAL ERROR: The GOOGLE_API_KEY environment variable is not set.")
 
 # --- Model Loading ---
+model = None
 
 def get_model():
     """

@@ -9,7 +9,7 @@ export default function ControlsPanel({
   isLoading, 
   error 
 }) {
-  // 2. Create a ref to link our custom button to the hidden file input
+  
   const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
@@ -46,7 +46,7 @@ export default function ControlsPanel({
           </div>
         )}
         
-        {/* --- THIS ENTIRE BLOCK IS UPDATED --- */}
+        
         <div>
           <label className="flex items-center space-x-2 text-gray-400 font-medium mb-2">
             <Upload size={20} />

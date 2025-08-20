@@ -11,7 +11,7 @@ import { predictImage, predictVideo } from '../api/predict';
 export default function Dashboard() {
   // --- 2. MANAGE THE SELECTED FILE STATE HERE ---
   const [selectedFile, setSelectedFile] = useState(null); 
-  const [predictionResult, setPredictionResult] = useState(null); // Renamed from 'result' for clarity
+  const [predictionResult, setPredictionResult] = useState(null); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,7 +22,7 @@ export default function Dashboard() {
     setError(null);
   };
 
-  // --- 4. UPDATED DETECTION LOGIC ---
+  
   const handleDetect = async () => {
     if (!selectedFile) {
       setError("Please select a file first.");
