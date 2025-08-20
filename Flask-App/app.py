@@ -13,7 +13,9 @@ from werkzeug.utils import secure_filename
 load_dotenv()
 
 # --- Initialization and Configuration ---
-app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
+FRONTEND_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'react-app', 'build'))
+app = Flask(__name__, static_folder=FRONTEND_FOLDER, static_url_path='/')
+
 CORS(app) 
 
 UPLOAD_FOLDER = 'static/uploads/'
