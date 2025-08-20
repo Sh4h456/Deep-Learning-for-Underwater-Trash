@@ -14,8 +14,13 @@
 /Flask-App/*.env
 /Flask-App/.env
 
+# Ignore large model files
+/Flask-App/best.pt
 
-
+# Ignore user-uploaded and processed files by ignoring the directories
+# The trailing slash "/" is important - it means "this is a directory"
+/Flask-App/static/uploads/
+/Flask-App/static/processed/
 
 
 # --- Node / Frontend (react-app) ---
