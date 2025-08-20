@@ -33,14 +33,22 @@ except KeyError:
 
 # --- Model Loading ---
 
-try:
-    print("Loading YOLOv8 model...")
-    model = YOLO('best.pt')
-    print("YOLOv8 model loaded successfully.")
-except Exception as e:
-    print(f"CRITICAL ERROR: Failed to load YOLOv8 model: {e}")
-    model = None
-
+def get_model():
+    """
+    Loads the YOLO model if it hasn't been loaded yet (Singleton Pattern).
+    This function ensures the memory-intensive model is loaded only once,
+    and only when it's first needed.
+    """
+    global model
+    if model is None:
+        print("--- LAZY LOADING: Loading YOLOv8 model for the first time... ---")
+        try:
+            model = YOLO('best.pt')
+            print("--- LAZY LOADING: Model loaded successfully. ---")
+        except Exception as e:
+            print(f"CRITICAL ERROR: Failed to lazy-load YOLOv8 model: {e}")
+            # The model will remain None if loading fails
+    return model
 
 ### --- NEW: Load Ground Truth Data --- ###
 def load_ground_truth_data(files):
@@ -122,7 +130,8 @@ def processed_file(filename):
 ### --- UPDATED: /api/predict route --- ###
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    if model is None:
+    current_model = get_model()
+    if current_model is None:
         return jsonify({"error": "Model is not loaded"}), 500
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -211,7 +220,8 @@ def predict():
 
 @app.route('/api/predict-video', methods=['POST'])
 def predict_video():
-    if model is None:
+    current_model = get_model()
+    if current_model is None:
         return jsonify({"error": "Model is not loaded"}), 500
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
