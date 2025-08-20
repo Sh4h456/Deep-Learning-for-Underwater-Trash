@@ -2,6 +2,7 @@ import os
 import json 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from whitenoise import WhiteNoise
 from ultralytics import YOLO
 from PIL import Image
 import cv2
@@ -14,9 +15,16 @@ load_dotenv()
 
 # --- Initialization and Configuration ---
 FRONTEND_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'react-app', 'build'))
-app = Flask(__name__, static_folder=FRONTEND_FOLDER, static_url_path='/')
 
+# --- CRITICAL CHANGE ---
+# When using WhiteNoise, we initialize Flask WITHOUT the static_folder argument
+# WhiteNoise will handle serving the static files itself.
+app = Flask(__name__)
 CORS(app) 
+
+# --- WHITENOISE CONFIGURATION ---
+# 1. Tell WhiteNoise about your static files folder
+app.wsgi_app = WhiteNoise(app.wsgi_app, root=os.path.join(FRONTEND_FOLDER), index_file=True)
 
 UPLOAD_FOLDER = 'static/uploads/'
 PROCESSED_FOLDER = 'static/processed/'
