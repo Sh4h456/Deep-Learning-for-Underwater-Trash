@@ -2,7 +2,7 @@ import os
 import json 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from whitenoise import WhiteNoise
+
 from ultralytics import YOLO
 from PIL import Image
 import cv2
