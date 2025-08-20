@@ -10,19 +10,15 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import numpy as np
 from werkzeug.utils import secure_filename
-
 load_dotenv()
 
 # --- Initialization and Configuration ---
-FRONTEND_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'react-app', 'build'))
+FRONTEND_BUILD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'react-app', 'build'))
 
-
-app = Flask(__name__)
-CORS(app) 
-
-# --- WHITENOISE CONFIGURATION ---
-# 1. Tell WhiteNoise about your static files folder
-app.wsgi_app = WhiteNoise(app.wsgi_app, root=os.path.join(FRONTEND_FOLDER), index_file=True)
+# --- FLASK INITIALIZATION ---
+# We now configure Flask to use this folder for all static files.
+app = Flask(__name__, static_folder=os.path.join(FRONTEND_BUILD_DIR, 'static'))
+CORS(app)
 
 UPLOAD_FOLDER = 'static/uploads/'
 PROCESSED_FOLDER = 'static/processed/'
@@ -317,11 +313,14 @@ def chat():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
+    # If the requested path is a file in the build directory, serve it.
+    if path != "" and os.path.exists(os.path.join(FRONTEND_BUILD_DIR, path)):
+        return send_from_directory(FRONTEND_BUILD_DIR, path)
+    # Otherwise, serve the main index.html file.
+    # This allows React to handle routing for pages like /performance or /comparison.
     else:
-        return send_from_directory(app.static_folder, 'index.html')
+        return send_from_directory(FRONTEND_BUILD_DIR, 'index.html')
 
-# --- Run the App ---
+# --- Run the App (for local development) ---
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
