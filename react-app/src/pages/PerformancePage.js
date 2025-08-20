@@ -5,7 +5,7 @@ import { metrics, chartData } from '../data/performanceData';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ArrowLeft } from 'lucide-react';
 
-// A reusable card component for displaying a single metric (No changes needed here)
+// A reusable card component for displaying a single metric 
 const MetricCard = ({ title, value, description }) => (
   <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg transition-all duration-300 ease-in-out hover:border-cyan-500 hover:scale-105 hover:shadow-cyan-500/20">
     <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider">{title}</h3>
@@ -19,7 +19,7 @@ export default function PerformancePage() {
     <div className="min-h-screen bg-gray-900 text-gray-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         
-        {/* Back Button and Header (No changes needed here) */}
+        
         <div className="mb-8">
           <Link to="/dashboard" className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors">
             <ArrowLeft size={20} />

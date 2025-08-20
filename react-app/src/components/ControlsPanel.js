@@ -1,31 +1,35 @@
 // src/components/ControlsPanel.js
-import React, { useState } from 'react';
-import { Upload} from 'lucide-react';
+import React, { useRef } from 'react'; // 1. Import useRef
+import { Upload } from 'lucide-react';
 
-export default function ControlsPanel({ onDetect, isLoading, error }) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+export default function ControlsPanel({ 
+  selectedFile, 
+  onFileChange, 
+  onDetect, 
+  isLoading, 
+  error 
+}) {
+  // 2. Create a ref to link our custom button to the hidden file input
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      onFileChange(file);
     }
   };
 
-  // This function is now for the button click
   const handleSubmit = (event) => {
     event.preventDefault();
     if (selectedFile) {
-      // Use the onDetect prop to trigger detection in the parent
-      onDetect(selectedFile); 
+      onDetect(); 
     } else {
       alert("Please select a file first.");
     }
   };
 
-
+  const isVideo = selectedFile && selectedFile.type.startsWith('video/');
+  const previewUrl = selectedFile ? URL.createObjectURL(selectedFile) : null;
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
@@ -33,36 +37,58 @@ export default function ControlsPanel({ onDetect, isLoading, error }) {
       <form onSubmit={handleSubmit} className="space-y-6">
         {previewUrl && (
           <div>
-            <label className="text-sm font-medium text-gray-400 mb-2 block">Image Preview:</label>
-            <img src={previewUrl} alt="Preview" className="rounded-lg max-h-48 w-full object-cover" />
+            <label className="text-sm font-medium text-gray-400 mb-2 block">File Preview:</label>
+            {isVideo ? (
+              <video src={previewUrl} controls muted className="rounded-lg max-h-48 w-full object-cover" />
+            ) : (
+              <img src={previewUrl} alt="Preview" className="rounded-lg max-h-48 w-full object-cover" />
+            )}
           </div>
         )}
         
+        {/* --- THIS ENTIRE BLOCK IS UPDATED --- */}
         <div>
-          <label htmlFor="file" className="flex items-center space-x-2 text-gray-400 font-medium mb-2">
+          <label className="flex items-center space-x-2 text-gray-400 font-medium mb-2">
             <Upload size={20} />
-            <span>{selectedFile ? 'Change Image File' : '1. Upload Image File'}</span>
+            <span>{selectedFile ? 'Change File' : '1. Upload File'}</span>
           </label>
-          <input 
-            type="file" 
-            id="file" 
-            onChange={handleFileChange} 
-            className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-900/50 file:text-cyan-300 hover:file:bg-cyan-900" 
-            required
-          />
+          
+          <div className="flex items-center space-x-4">
+            {/* 3. The actual file input is now hidden */}
+            <input 
+              type="file" 
+              id="file" 
+              onChange={handleFileChange} 
+              accept="image/*,video/*"
+              className="hidden" 
+              ref={fileInputRef}
+              key={selectedFile ? selectedFile.name : 'empty'}
+            />
+            
+            {/* 4. This is our new, styled "Choose File" button */}
+            <button 
+              type="button" 
+              onClick={() => fileInputRef.current.click()}
+              className="bg-cyan-900/50 text-cyan-300 font-semibold py-2 px-4 rounded-full text-sm hover:bg-cyan-900 whitespace-nowrap"
+            >
+              Choose File
+            </button>
+
+            {/* 5. This span displays the filename or the default text */}
+            <span className="text-sm text-gray-400 truncate">
+              {selectedFile ? selectedFile.name : 'No file chosen'}
+            </span>
+          </div>
         </div>
-        
-        
         
         {error && <p className="text-red-400 text-sm bg-red-900/30 p-3 rounded-lg">{error}</p>}
         
-        {/* --- THE DETECT BUTTON IS BACK --- */}
         <button 
           type="submit" 
-          disabled={isLoading}
+          disabled={isLoading || !selectedFile}
           className="w-full bg-cyan-500 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-cyan-400 transition-all duration-200 shadow-md disabled:bg-gray-600 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Analyzing...' : 'Detect Debris'}
+          {isLoading ? 'Analyzing...' : 'Detect Objects'}
         </button>
       </form>
     </div>
