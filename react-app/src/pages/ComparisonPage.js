@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { comparisonMetrics, comparisonImages } from '../data/comparisonData';
-import { ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle} from 'lucide-react';
 
 // A component for each row in the comparison table
 const MetricRow = ({ metric, yolov7, yolov8 }) => {
